@@ -16,13 +16,8 @@ function Questioneditor() {
     answers: "",
     score: 1,
   });
-  const [state, setstate] = useState({
-    question: [],
-    option: [],
-    answer: [],
-    score: [],
-  });
-  const [finalSaved, setfinalSaved] = useState({
+  const [displayCard, setdisplayCard] = useState(false);
+  const [Finalstate, setFinalstate] = useState({
     finalQuestions: [],
     finalOptions: [],
     finalAnswer: [],
@@ -30,48 +25,39 @@ function Questioneditor() {
   });
 
   const AddtoList = () => {
-    if (postQuestion.questions) {
-      state.question.push(postQuestion.questions);
-      setpostQuestion({ ...postQuestion, questions: "" });
+    if (
+      postQuestion.options.length >= 1 &&
+      postQuestion.questions.length >= 1 &&
+      postQuestion.answers.length >= 1
+    ) {
+      setdisplayCard(true);
     }
-    if (postQuestion.options) {
-      state.option.push(postQuestion.options);
-      setpostQuestion({ ...postQuestion, options: "" });
-    }
-    if (postQuestion.answers) {
-      state.answer.push(postQuestion.answers);
-      setpostQuestion({ ...postQuestion, answers: "" });
-    }
-    if (postQuestion.score) {
-      state.score.push(postQuestion.score);
-      setpostQuestion({ ...postQuestion, score: 1 });
-    }
-    setpostQuestion({ questions: "", options: "", answers: "", score: 1 });
   };
 
   const resetfun = () => {
-    setstate({ question: [], option: [], answer: [], score: [] });
+    setpostQuestion({
+      questions: "",
+      options: "",
+      answers: "",
+      score: 1,
+    });
+    setdisplayCard(false);
   };
 
   const finalList = () => {
-    if (state.question) {
-      finalSaved.finalQuestions.push(state.question[0]);
-      setpostQuestion({ ...state, question: [] });
+    if (postQuestion.questions) {
+      Finalstate.finalQuestions.push(postQuestion.questions);
     }
-    if (state.option) {
-      finalSaved.finalOptions.push(state.option[0]);
-      setpostQuestion({ ...state, options: [] });
+    if (postQuestion.options) {
+      Finalstate.finalOptions.push(postQuestion.options);
     }
-    if (state.answer) {
-      finalSaved.finalAnswer.push(state.answer[0]);
-      setpostQuestion({ ...state, answer: [] });
+    if (postQuestion.answers) {
+      Finalstate.finalAnswer.push(postQuestion.answers);
     }
-    if (state.score) {
-      finalSaved.finalScore.push(state.score[0]);
-      setpostQuestion({ ...state, score: [] });
+    if (postQuestion.score) {
+      Finalstate.finalScore.push(postQuestion.score);
     }
-    console.log(finalSaved);
-    setstate({ question: [], option: [], answer: [], score: [] });
+    console.log(Finalstate);
   };
 
   const footer = (
@@ -197,7 +183,7 @@ function Questioneditor() {
         </div>
       </div>
       <div>
-        {state.option.length >= 1 ? (
+        {displayCard ? (
           <Card
             style={{
               width: "80em",
@@ -206,8 +192,8 @@ function Questioneditor() {
             footer={footer}
           >
             <div>
-              <h3>{state.question}</h3>
-              {state.option[state.option.length - 1].split(",").map((opi) => {
+              <h3>{postQuestion.questions}</h3>
+              {postQuestion.options.split(",").map((opi) => {
                 return (
                   <div className="p-field-radiobutton">
                     <RadioButton name="category" value={opi} />
@@ -216,10 +202,10 @@ function Questioneditor() {
                 );
               })}
               <div className="p-mb-3 p-text-normal">
-                <h5>{`Answer : ${state.answer}`}</h5>
+                <h5>{`Answer : ${postQuestion.answers}`}</h5>
               </div>
               <div className="p-mb-3 p-text-normal">
-                <h5>{`Score Assigned : ${state.score}`}</h5>
+                <h5>{`Score Assigned : ${postQuestion.score}`}</h5>
               </div>
             </div>
           </Card>
@@ -232,5 +218,4 @@ function Questioneditor() {
     </div>
   );
 }
-
 export default Questioneditor;

@@ -10,7 +10,6 @@ const App = () => {
   return (
     <div>
       <Questioneditor />
-      {/* <h1>prime</h1> */}
     </div>
   );
 };
