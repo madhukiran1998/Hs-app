@@ -10,6 +10,7 @@ const App = () => {
   return (
     <div>
       <Questioneditor />
+      {/* <Complier /> */}
     </div>
   );
 };
