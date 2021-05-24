@@ -10,6 +10,7 @@ export const getTestlist = async (req, res) => {
 };
 
 export const createQuestions = async (req, res) => {
+  console.log(req.body);
   const question_list = req.body;
   const newQuestion_list = postQuestions(question_list);
 

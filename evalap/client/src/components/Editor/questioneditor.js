@@ -9,6 +9,7 @@ import "primeflex/primeflex.css";
 import { Card } from "primereact/card";
 import { RadioButton } from "primereact/radiobutton";
 import { setQuestion } from "../../redux/actions/question";
+import * as api from "../../api/index";
 
 function Questioneditor() {
   const [postQuestion, setpostQuestion] = useState({
@@ -50,7 +51,7 @@ function Questioneditor() {
   const finalList = () => {
     if (postQuestion.questions) {
       Finalstate.questionsList.push(postQuestion);
-      console.log(Finalstate);
+      console.log(JSON.stringify(Finalstate));
       setdisplayCard(false);
       setpreviews(false);
       setpostQuestion({
@@ -70,6 +71,14 @@ function Questioneditor() {
         (question, index) => index !== ids
       );
       return setFinalstate({ ...Finalstate, questionsList: lateone });
+    }
+  };
+
+  const dispatchQues = async () => {
+    try {
+      await api.createPost(Finalstate);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -294,49 +303,71 @@ function Questioneditor() {
           className="p-mb-3 p-text-normal"
           style={{
             textAlign: "center",
-            fontFamily: "serif",
+            color: "black",
+            fontFamily: "monospace",
             fontSize: "1.5em",
           }}
         >
           SAVED QUESTIONS
         </h2>
-        {previews ? (
-          <h2>Name</h2>
-        ) : (
-          Finalstate.questionsList.map((ques, index) => {
-            return (
-              <>
-                <Card
-                  id={`${index}`}
-                  style={{
-                    width: "80em",
-                    margin: "70 0 0 0",
-                  }}
-                  footer={footer2}
-                  className="p-mt-3"
-                >
-                  <div>
-                    <h3>{ques.questions}</h3>
-                    {ques.options.split(",").map((opi) => {
-                      return (
-                        <div className="p-field-radiobutton">
-                          <RadioButton name="category" value={opi} />
-                          <label>{opi}</label>
-                        </div>
-                      );
-                    })}
-                    <div className="p-mb-3 p-text-normal">
-                      <h5>{`Answer : ${ques.answers}`}</h5>
+        {previews
+          ? null
+          : Finalstate.questionsList.map((ques, index) => {
+              return (
+                <>
+                  <Card
+                    id={`${index}`}
+                    style={{
+                      width: "80em",
+                      margin: "70 0 0 0",
+                    }}
+                    footer={footer2}
+                    className="p-mt-3"
+                  >
+                    <div>
+                      <h3>{ques.questions}</h3>
+                      {ques.options.split(",").map((opi) => {
+                        return (
+                          <div className="p-field-radiobutton">
+                            <RadioButton name="category" value={opi} />
+                            <label>{opi}</label>
+                          </div>
+                        );
+                      })}
+                      <div className="p-mb-3 p-text-normal">
+                        <h5>{`Answer : ${ques.answers}`}</h5>
+                      </div>
+                      <div className="p-mb-3 p-text-normal">
+                        <h5>{`Score Assigned : ${ques.score}`}</h5>
+                      </div>
                     </div>
-                    <div className="p-mb-3 p-text-normal">
-                      <h5>{`Score Assigned : ${ques.score}`}</h5>
-                    </div>
-                  </div>
-                </Card>
-              </>
-            );
-          })
-        )}
+                  </Card>
+                </>
+              );
+            })}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {Finalstate.questionsList.length && (
+            <Button
+              type="button"
+              label="SAVE QUIZ"
+              icon="pi pi-question"
+              className="p-button-warning"
+              badge={`${Finalstate.questionsList.length}`}
+              badgeClassName="p-badge-danger"
+              style={{
+                padding: "20px",
+                margin: "50px",
+              }}
+              onClick={dispatchQues}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

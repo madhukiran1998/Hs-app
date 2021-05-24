@@ -1,18 +1,17 @@
 import mongoose from "mongoose";
 
+const questionlists = mongoose.Schema({
+  question: String,
+  options: String,
+  answer: String,
+  score: Number,
+});
+
 const postQuestionschema = mongoose.Schema({
-  Test_id: Number,
   title: String,
-  description: String,
-  question_list: [
-    {
-      id: Number,
-      question: String,
-      options: [String],
-      answer: String,
-      score: Number,
-    },
-  ],
+  companyName: String,
+  Website: String,
+  questions_list: [questionlists],
   createdAt: {
     type: Date,
     default: new Date(),
