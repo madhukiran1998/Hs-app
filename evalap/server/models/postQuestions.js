@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const questionlists = mongoose.Schema({
-  question: String,
+  questions: String,
   options: String,
-  answer: String,
+  answers: String,
   score: Number,
 });
 
@@ -11,7 +11,7 @@ const postQuestionschema = mongoose.Schema({
   title: String,
   companyName: String,
   Website: String,
-  questions_list: [questionlists],
+  questionsList: [questionlists],
   createdAt: {
     type: Date,
     default: new Date(),
